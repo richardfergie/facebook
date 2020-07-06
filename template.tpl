@@ -11,8 +11,6 @@ ___INFO___
 {
   "type": "TAG",
   "id": "cvt_temp_public_id",
-  "__wm": "VGVtcGxhdGUtQXV0aG9yX0ZhY2Vib29rLVNpbW8tQWhhdmE=",
-  "categories": ["ADVERTISING", "ANALYTICS"],
   "version": 1,
   "securityGroups": [],
   "displayName": "Facebook",
@@ -51,15 +49,52 @@ ___SANDBOXED_JS_FOR_SERVER___
 const enc = require('encodeUriComponent');
 const getAllEventData = require('getAllEventData');
 const JSON = require('JSON');
+const Math = require('Math');
 const sendHttpRequest = require('sendHttpRequest');
 const setResponseBody = require('setResponseBody');
 const setResponseHeader = require('setResponseHeader');
 const setResponseStatus = require('setResponseStatus');
 
-const eventData = getAllEventData().event_data;
+const eventData = getAllEventData();
+
+const mapFbEvent = data => {
+  const mappedData = {
+    event_name: data.event_name,
+    event_time: Math.round(data.timestamp_micros / 1000),
+    user_data: {
+      client_ip_address: data.user_properties.ip_address,
+      client_user_agent: data.user_properties.user_agent
+    },
+    data_processing_options: data['x-fb-dpo']
+  };
+  if (data.source_url) mappedData.event_source_url = data.source_url;
+  if (data['x-fb-opt_out']) mappedData.opt_out = data['x-fb-opt_out'];
+  if (data['x-fb-dpoco']) mappedData.data_processing_options_country = data['x-fb-dpoco'];
+  if (data['x-fb-dpost']) mappedData.data_processing_options_state = data['x-fb-dpost'];
+  if (data['x-fb-custom_data']) mappedData.custom_data = data['x-fb-custom_data'];
+  if (data.user_properties.email_address) mappedData.user_data.em = data.user_properties.email_address;
+  if (data.user_properties.phone_number) mappedData.user_data.ph = data.user_properties.phone_number;
+  if (data.user_properties.gender) mappedData.user_data.ge = data.user_properties.gender;
+  if (data.user_properties.date_of_birth) mappedData.user_data.db = data.user_properties.date_of_birth;
+  if (data.user_properties.last_name) mappedData.user_data.ln = data.user_properties.last_name;
+  if (data.user_properties.first_name) mappedData.user_data.fn = data.user_properties.first_name;
+  if (data.user_properties.address.city) mappedData.user_data.ct = data.user_properties.address.city;
+  if (data.user_properties.address.region) mappedData.user_data.st = data.user_properties.address.region;
+  if (data.user_properties.address.post_code) mappedData.user_data.zp = data.user_properties.address.post_code;
+  if (data.user_properties.address.country_code) mappedData.user_data.country = data.user_properties.address.country_code;
+  if (data.user_properties.user_id) mappedData.user_data.external_id = data.user_properties.user_id;
+  if (data['x-fb-fbc']) mappedData.user_data.fbc = data['x-fb-fbc'];
+  if (data['x-fb-fbp']) mappedData.user_data.fbp = data['x-fb-fbp'];
+  if (data['x-fb-subscription_id']) mappedData.user_data.subscription_id = data['x-fb-subscription_id'];
+  if (data['x-fb-login_id']) mappedData.user_data.fb_login_id = data['x-fb-login_id'];
+  if (data['x-fb-lead_id']) mappedData.user_data.lead_id = data['x-fb-lead_id'];
+  return mappedData;
+};
+
+
 const apiVersion = '7.0';
-const postUrl = 'https://graph.facebook.com/v' + apiVersion + '/' + enc(eventData.pixel_id) + '/events?access_token=' + enc(data.accessToken);
-const postBody = 'data=' + enc(JSON.stringify([eventData.data])) + '&test_event_code=' + enc(eventData.test_event_code);
+const postUrl = 'https://graph.facebook.com/v' + apiVersion + '/' + enc(eventData['x-fb-pixel_id']) + '/events?access_token=' + enc(data.accessToken);
+const postBody = 'data=' + enc(JSON.stringify([mapFbEvent(eventData)])) + '&test_event_code=' + enc(eventData['x-fb-test_event_code']);
 
 sendHttpRequest(postUrl, (statusCode, headers, body) => {
   setResponseStatus(statusCode);
@@ -170,21 +205,47 @@ scenarios:
     assertApi('setResponseBody').wasCalledWith('');
     assertApi('gtmOnSuccess').wasCalled();
 setup: "const enc = require('encodeUriComponent');\nconst JSON = require('JSON');\n\
-  \nconst mockData = {\n  accessToken: 'access_token'\n};\n\nconst eventData = {\n\
-  \  event_name: 'PageView',\n  event_time: 12345678,\n  opt_out: true,\n  event_source_url:\
-  \ 'https://www.domain.com/',\n  event_id: 'event_id',\n  user_data: {\n    fb_login_id:\
-  \ 1234567,\n    client_ip_address: '1.2.3.4',\n    client_user_agent: 'user-agent'\n\
-  \  },\n  custom_data: {\n    content_type: 'product',\n    currency: 'EUR'\n  }\n\
-  };\n\nconst mockUrl = 'https://graph.facebook.com/v7.0/pixel_id/events?access_token='\
-  \ + enc(mockData.accessToken);\nconst mockBody = 'data=' + enc(JSON.stringify([eventData]))\
+  const Math = require('Math');\n\nconst mockData = {\n  accessToken: 'access_token'\n\
+  };\n\nconst eventData = {\n  event_name: 'PageView',\n  timestamp_micros: 12345678900,\n\
+  \  'x-fb-opt_out': true,\n  'x-fb-pixel_id': 'pixel_id',\n  source_url: 'https://www.domain.com/',\n\
+  \  event_id: 'event_id',\n  user_properties: {\n    ip_address: '1.2.3.4',\n   \
+  \ user_agent: 'user-agent',\n    address: {}\n  },\n  'x-fb-login_id': 1234567,\n\
+  \  'x-fb-custom_data': {\n    content_type: 'product',\n    currency: 'EUR'\n  },\n\
+  \  'x-fb-dpo': ['LDU'],\n  'x-fb-dpoco': '0',\n  'x-fb-dpost': '0',\n  'x-fb-test_event_code':\
+  \ 'test_event_code'\n};\n\nconst mappedData = {\n  event_name: eventData.event_name,\n\
+  \  event_time: Math.round(eventData.timestamp_micros / 1000),\n  user_data: {\n\
+  \    client_ip_address: eventData.user_properties.ip_address,\n    client_user_agent:\
+  \ eventData.user_properties.user_agent\n  },\n  data_processing_options: eventData['x-fb-dpo']\n\
+  };\nif (eventData.source_url) mappedData.event_source_url = eventData.source_url;\n\
+  if (eventData['x-fb-opt_out']) mappedData.opt_out = eventData['x-fb-opt_out'];\n\
+  if (eventData['x-fb-dpoco']) mappedData.data_processing_options_country = eventData['x-fb-dpoco'];\n\
+  if (eventData['x-fb-dpost']) mappedData.data_processing_options_state = eventData['x-fb-dpost'];\n\
+  if (eventData['x-fb-custom_data']) mappedData.custom_data = eventData['x-fb-custom_data'];\n\
+  if (eventData.user_properties.email_address) mappedData.user_data.em = eventData.user_properties.email_address;\n\
+  if (eventData.user_properties.phone_number) mappedData.user_data.ph = eventData.user_properties.phone_number;\n\
+  if (eventData.user_properties.gender) mappedData.user_data.ge = eventData.user_properties.gender;\n\
+  if (eventData.user_properties.date_of_birth) mappedData.user_data.db = eventData.user_properties.date_of_birth;\n\
+  if (eventData.user_properties.last_name) mappedData.user_data.ln = eventData.user_properties.last_name;\n\
+  if (eventData.user_properties.first_name) mappedData.user_data.fn = eventData.user_properties.first_name;\n\
+  if (eventData.user_properties.address.city) mappedData.user_data.ct = eventData.user_properties.address.city;\n\
+  if (eventData.user_properties.address.region) mappedData.user_data.st = eventData.user_properties.address.region;\n\
+  if (eventData.user_properties.address.post_code) mappedData.user_data.zp = eventData.user_properties.address.post_code;\n\
+  if (eventData.user_properties.address.country_code) mappedData.user_data.country\
+  \ = eventData.user_properties.address.country_code;\nif (eventData.user_properties.user_id)\
+  \ mappedData.user_data.external_id = eventData.user_properties.user_id;\nif (eventData['x-fb-fbc'])\
+  \ mappedData.user_data.fbc = eventData['x-fb-fbc'];\nif (eventData['x-fb-fbp'])\
+  \ mappedData.user_data.fbp = eventData['x-fb-fbp'];\nif (eventData['x-fb-subscription_id'])\
+  \ mappedData.user_data.subscription_id = eventData['x-fb-subscription_id'];\nif\
+  \ (eventData['x-fb-login_id']) mappedData.user_data.fb_login_id = eventData['x-fb-login_id'];\n\
+  if (eventData['x-fb-lead_id']) mappedData.user_data.lead_id = eventData['x-fb-lead_id'];\n\
+  \nconst mockUrl = 'https://graph.facebook.com/v7.0/pixel_id/events?access_token='\
+  \ + enc(mockData.accessToken);\nconst mockBody = 'data=' + enc(JSON.stringify([mappedData]))\
   \ + '&test_event_code=' + enc('test_event_code');\nconst mockOptions = {headers:\
   \ {content_type: 'application/x-www-form-urlencoded'}, method: 'POST', timeout:\
-  \ 500};\n\nmock('getAllEventData', () => {\n  return {\n    event_name: 'facebook',\n\
-  \    event_data: {\n      pixel_id: 'pixel_id',\n      test_event_code: 'test_event_code',\n\
-  \      data: eventData\n    }\n  };\n});\n\nlet httpPostUrl, httpResponse, httpOptions,\
-  \ httpBody;\nmock('sendHttpRequest', (postUrl, response, options, body) => {\n \
-  \ httpResponse = response;\n  httpBody = body;\n  httpResponse(200, {}, '');\n});\n\
-  \  \n  "
+  \ 500};\n\nmock('getAllEventData', () => {\n  return eventData;\n});\n\nlet httpPostUrl,\
+  \ httpResponse, httpOptions, httpBody;\nmock('sendHttpRequest', (postUrl, response,\
+  \ options, body) => {\n  httpResponse = response;\n  httpBody = body;\n  httpResponse(200,\
+  \ {}, '');\n});\n  \n  "
 
 
 ___NOTES___
