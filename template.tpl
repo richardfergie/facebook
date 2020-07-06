@@ -10,6 +10,8 @@ ___INFO___
 
 {
   "type": "TAG",
+  "__wm": "VGVtcGxhdGUtQXV0aG9yX0ZhY2Vib29rLVNpbW8tQWhhdmE=",
+  "categories": ["ADVERTISING", "ANALYTICS"],
   "id": "cvt_temp_public_id",
   "version": 1,
   "securityGroups": [],
