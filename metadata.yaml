@@ -1,7 +1,7 @@
 homepage: "https://www.simoahava.com/"
 versions:
   # Latest version
-  - sha: 5bcfaa408ac3d5e062a84d21286eee7b45b5f987
+  - sha: 8edb5cd67ec2be04571085b8072e71ae977f2b21
     changeNotes: |2
       Update to use event schema.
       Update with DPO support.
