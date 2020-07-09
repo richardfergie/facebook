@@ -1,10 +1,12 @@
 homepage: "https://www.simoahava.com/"
 versions:
   # Latest version
+  - sha: 9646ce7790913f1cda304b0cf6a0545fa0f3cf94
+    changeNotes: Use unified event_name format.
+  # Older versions
   - sha: 8edb5cd67ec2be04571085b8072e71ae977f2b21
     changeNotes: |2
       Update to use event schema.
       Update with DPO support.
-  # Older versions
   - sha: 11ce57a437273e2b064f8624cf3d4ac79b3e68c1
     changeNotes: Initial release.
