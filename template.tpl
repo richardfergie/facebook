@@ -1,18 +1,13 @@
-﻿___TERMS_OF_SERVICE___
-
-By creating or modifying this file you agree to Google Tag Manager's Community
-Template Gallery Developer Terms of Service available at
-https://developers.google.com/tag-manager/gallery-tos (or such other URL as
-Google may provide), as modified from time to time.
-
-
-___INFO___
+﻿___INFO___
 
 {
   "type": "TAG",
   "id": "cvt_temp_public_id",
-  "__wm": "VGVtcGxhdGUtQXV0aG9yX0ZhY2Vib29rLVNpbW8tQWhhdmE=",
-  "categories": ["ADVERTISING", "ANALYTICS"],
+  "__wm": "VGVtcGxhdGUtQXV0aG9yX0ZhY2Vib29rLVNpbW8tQWhhdmE\u003d",
+  "categories": [
+    "ADVERTISING",
+    "ANALYTICS"
+  ],
   "version": 1,
   "securityGroups": [],
   "displayName": "Facebook",
@@ -76,7 +71,7 @@ const mapFbEvent = data => {
     },
     data_processing_options: data['x-fb-dpo']
   };
-  if (data.source_url) mappedData.event_source_url = data.source_url;
+  if (data.page_location) mappedData.event_source_url = data.page_location;
   if (data['x-fb-opt_out']) mappedData.opt_out = data['x-fb-opt_out'];
   if (data['x-fb-dpoco']) mappedData.data_processing_options_country = data['x-fb-dpoco'];
   if (data['x-fb-dpost']) mappedData.data_processing_options_state = data['x-fb-dpost'];
@@ -249,7 +244,7 @@ scenarios:
 setup: "const enc = require('encodeUriComponent');\nconst JSON = require('JSON');\n\
   const Math = require('Math');\n\nconst mockData = {\n  accessToken: 'access_token'\n\
   };\n\nconst eventData = {\n  event_name: 'page_view',\n  timestamp_micros: 12345678900,\n\
-  \  'x-fb-opt_out': true,\n  'x-fb-pixel_id': 'pixel_id',\n  source_url: 'https://www.domain.com/',\n\
+  \  'x-fb-opt_out': true,\n  'x-fb-pixel_id': 'pixel_id',\n  page_location: 'https://www.domain.com/',\n\
   \  event_id: 'event_id',\n  user_properties: {\n    ip_address: '1.2.3.4',\n   \
   \ user_agent: 'user-agent',\n    address: {}\n  },\n  'x-fb-login_id': 1234567,\n\
   \  'x-fb-custom_data': {\n    content_type: 'product',\n    currency: 'EUR'\n  },\n\
@@ -257,8 +252,8 @@ setup: "const enc = require('encodeUriComponent');\nconst JSON = require('JSON')
   \ 'test_event_code'\n};\n\nconst mappedData = {\n  event_name: 'PageView',\n  event_time:\
   \ Math.round(eventData.timestamp_micros / 1000),\n  user_data: {\n    client_ip_address:\
   \ eventData.user_properties.ip_address,\n    client_user_agent: eventData.user_properties.user_agent\n\
-  \  },\n  data_processing_options: eventData['x-fb-dpo']\n};\nif (eventData.source_url)\
-  \ mappedData.event_source_url = eventData.source_url;\nif (eventData['x-fb-opt_out'])\
+  \  },\n  data_processing_options: eventData['x-fb-dpo']\n};\nif (eventData.page_location)\
+  \ mappedData.event_source_url = eventData.page_location;\nif (eventData['x-fb-opt_out'])\
   \ mappedData.opt_out = eventData['x-fb-opt_out'];\nif (eventData['x-fb-dpoco'])\
   \ mappedData.data_processing_options_country = eventData['x-fb-dpoco'];\nif (eventData['x-fb-dpost'])\
   \ mappedData.data_processing_options_state = eventData['x-fb-dpost'];\nif (eventData['x-fb-custom_data'])\
