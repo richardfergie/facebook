@@ -43,7 +43,7 @@ ___TEMPLATE_PARAMETERS___
 
 ___SANDBOXED_JS_FOR_SERVER___
 
-const enc = require('encodeUriComponent');
+const encodeUriComponent = require('encodeUriComponent');
 const getAllEventData = require('getAllEventData');
 const JSON = require('JSON');
 const log = require('logToConsole');
@@ -53,6 +53,15 @@ const setResponseBody = require('setResponseBody');
 const setResponseHeader = require('setResponseHeader');
 const setResponseStatus = require('setResponseStatus');
 
+// Helpers
+
+// Guard against undefined values throwing errors when using encodeUriComponent API
+const enc = data => {
+  data = data || '';
+  return encodeUriComponent(data);
+};
+
+// Convert snake_case event name to CamelCase.
 const lowerCasePartsToStandardEvent = str => {
   return str.split('_').map(s => {
     return s.charAt(0).toUpperCase() + s.slice(1);
