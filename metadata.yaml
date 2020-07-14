@@ -1,9 +1,11 @@
 homepage: "https://www.simoahava.com/"
 versions:
   # Latest version
+  - sha: edd59683746919a00edc5eef1633d1c6f138afc4
+    changeNotes: Add possibility to override fields in the template.
+  # Older versions
   - sha: 3f3a0245ea939c5233b2d660eddb1b630f22ca99~
     changeNotes: Use unified event_name format.
-  # Older versions
   - sha: 8edb5cd67ec2be04571085b8072e71ae977f2b21
     changeNotes: |2
       Update to use event schema.
