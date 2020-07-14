@@ -37,6 +37,454 @@ ___TEMPLATE_PARAMETERS___
         "type": "NON_EMPTY"
       }
     ]
+  },
+  {
+    "type": "LABEL",
+    "name": "inheritInstructions",
+    "displayName": "If you set the settings in this tag to \u003cstrong\u003eInherit from Client\u003c/strong\u003e, the setting will use whatever information is passed to it from the Client. If you set any field to \u003cstrong\u003eOverride\u003c/strong\u003e, then the field value in this tag will override the corresponding value passed from the Client."
+  },
+  {
+    "type": "SELECT",
+    "name": "inheritPixelId",
+    "displayName": "Facebook Pixel ID",
+    "selectItems": [
+      {
+        "value": "inherit",
+        "displayValue": "Inherit from Client"
+      },
+      {
+        "value": "override",
+        "displayValue": "Override"
+      }
+    ],
+    "simpleValueType": true,
+    "subParams": [
+      {
+        "valueValidators": [
+          {
+            "errorMessage": "You must provide a Pixel ID",
+            "type": "NON_EMPTY"
+          },
+          {
+            "args": [
+              "^[0-9]+$"
+            ],
+            "errorMessage": "Invalid Pixel ID format",
+            "type": "REGEX"
+          }
+        ],
+        "simpleValueType": true,
+        "name": "pixelId",
+        "type": "TEXT",
+        "valueHint": "e.g. 12345678910",
+        "enablingConditions": [
+          {
+            "paramName": "inheritPixelId",
+            "paramValue": "override",
+            "type": "EQUALS"
+          }
+        ]
+      }
+    ],
+    "help": "Set to a valid Facebook Pixel ID. You can only add a single Pixel ID per tag."
+  },
+  {
+    "type": "SELECT",
+    "name": "inheritEventName",
+    "displayName": "Event Name",
+    "selectItems": [
+      {
+        "value": "inherit",
+        "displayValue": "Inherit from Client"
+      },
+      {
+        "value": "override",
+        "displayValue": "Override"
+      }
+    ],
+    "simpleValueType": true,
+    "subParams": [
+      {
+        "type": "TEXT",
+        "name": "eventName",
+        "simpleValueType": true,
+        "valueValidators": [
+          {
+            "type": "NON_EMPTY"
+          }
+        ],
+        "enablingConditions": [
+          {
+            "paramName": "inheritEventName",
+            "paramValue": "override",
+            "type": "EQUALS"
+          }
+        ],
+        "valueHint": "e.g. AddToCart"
+      }
+    ]
+  },
+  {
+    "type": "GROUP",
+    "name": "serverSideGroup",
+    "displayName": "Server-Side API Configuration",
+    "groupStyle": "ZIPPY_CLOSED",
+    "subParams": [
+      {
+        "type": "SELECT",
+        "name": "optOut",
+        "displayName": "Opt Out (Ads Delivery Optimization)",
+        "macrosInSelect": true,
+        "selectItems": [
+          {
+            "value": "inherit",
+            "displayValue": "Inherit from Client"
+          },
+          {
+            "value": true,
+            "displayValue": "True"
+          },
+          {
+            "value": false,
+            "displayValue": "False"
+          }
+        ],
+        "simpleValueType": true,
+        "defaultValue": "inherit",
+        "help": "Set to \u003cstrong\u003etrue\u003c/strong\u003e to only use this hit for attribution and not for ads delivery optimization."
+      },
+      {
+        "type": "SELECT",
+        "name": "inheritEventSourceUrl",
+        "displayName": "Source URL",
+        "selectItems": [
+          {
+            "value": "inherit",
+            "displayValue": "Inherit from Client"
+          },
+          {
+            "value": "override",
+            "displayValue": "Override"
+          }
+        ],
+        "simpleValueType": true,
+        "subParams": [
+          {
+            "type": "TEXT",
+            "name": "eventSourceUrl",
+            "simpleValueType": true,
+            "enablingConditions": [
+              {
+                "paramName": "inheritEventSourceUrl",
+                "paramValue": "override",
+                "type": "EQUALS"
+              }
+            ]
+          }
+        ],
+        "help": "Leave blank to use the current page URL, or provide a custom URL that Facebook will associate this event with."
+      },
+      {
+        "type": "SELECT",
+        "name": "inheritEventId",
+        "displayName": "Event ID",
+        "selectItems": [
+          {
+            "value": "inherit",
+            "displayValue": "Inherit from Client"
+          },
+          {
+            "value": "override",
+            "displayValue": "Override"
+          }
+        ],
+        "simpleValueType": true,
+        "subParams": [
+          {
+            "type": "TEXT",
+            "name": "eventId",
+            "simpleValueType": true,
+            "valueHint": "abcd-1234",
+            "enablingConditions": [
+              {
+                "paramName": "inheritEventId",
+                "paramValue": "override",
+                "type": "EQUALS"
+              }
+            ]
+          }
+        ],
+        "help": "Provide an optional ID that you can use to \u003ca href\u003d\"https://developers.facebook.com/docs/marketing-api/server-side-api/parameters/server-event#event-id\"\u003ededuplicate between browser and server events\u003c/a\u003e."
+      },
+      {
+        "type": "SELECT",
+        "name": "inheritTestId",
+        "displayName": "Test ID",
+        "selectItems": [
+          {
+            "value": "inherit",
+            "displayValue": "Inherit from Client"
+          },
+          {
+            "value": "override",
+            "displayValue": "Override"
+          }
+        ],
+        "simpleValueType": true,
+        "help": "Provide a Test ID if you want to test server-side events in the Test Events feature of Events Manager.",
+        "subParams": [
+          {
+            "type": "TEXT",
+            "name": "testId",
+            "simpleValueType": true,
+            "valueHint": "TEST123",
+            "enablingConditions": [
+              {
+                "paramName": "inheritTestId",
+                "paramValue": "override",
+                "type": "EQUALS"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "GROUP",
+    "name": "dataProcessingOptionsGroup",
+    "displayName": "Data Processing Options",
+    "groupStyle": "ZIPPY_CLOSED",
+    "subParams": [
+      {
+        "type": "LABEL",
+        "name": "dpoInfo",
+        "displayName": "Data Processing Options force this Facebook event to comply to regional regulations with regard to the processing and selling of user data. Read \u003ca href\u003d\"https://developers.facebook.com/docs/marketing-apis/data-processing-options\"\u003ethis\u003c/a\u003e for more information about how to configure this section."
+      },
+      {
+        "type": "SELECT",
+        "name": "inheritDpo",
+        "selectItems": [
+          {
+            "value": "inherit",
+            "displayValue": "Inherit from Client"
+          },
+          {
+            "value": "ldu",
+            "displayValue": "Limited Data Use (LDU)"
+          }
+        ],
+        "simpleValueType": true,
+        "subParams": [
+          {
+            "type": "TEXT",
+            "name": "dpoCountry",
+            "displayName": "Country",
+            "simpleValueType": true,
+            "enablingConditions": [
+              {
+                "paramName": "inheritDpo",
+                "paramValue": "ldu",
+                "type": "EQUALS"
+              }
+            ],
+            "defaultValue": 0,
+            "valueValidators": [
+              {
+                "type": "NUMBER"
+              }
+            ]
+          },
+          {
+            "type": "TEXT",
+            "name": "dpoState",
+            "displayName": "State",
+            "simpleValueType": true,
+            "defaultValue": 0,
+            "enablingConditions": [
+              {
+                "paramName": "inheritDpo",
+                "paramValue": "ldu",
+                "type": "EQUALS"
+              }
+            ],
+            "valueValidators": [
+              {
+                "type": "NUMBER"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "displayName": "User Data",
+    "name": "userData",
+    "groupStyle": "ZIPPY_CLOSED",
+    "type": "GROUP",
+    "subParams": [
+      {
+        "type": "LABEL",
+        "name": "userDataLabel",
+        "displayName": "See \u003ca href\u003d\"https://developers.facebook.com/docs/marketing-api/server-side-api/parameters/user-data\"\u003ethis documentation\u003c/a\u003e for more details on what user data parameters you can add to the call. If the documentation calls for the parameter to be hashed, you \u003cstrong\u003emust\u003c/strong\u003e hash it with SHA256 or the hit will not be sent to Facebook."
+      },
+      {
+        "type": "SELECT",
+        "name": "inheritUserData",
+        "selectItems": [
+          {
+            "value": "inherit",
+            "displayValue": "Inherit from Client"
+          },
+          {
+            "value": "override",
+            "displayValue": "Override"
+          }
+        ],
+        "simpleValueType": true,
+        "subParams": [
+          {
+            "name": "userDataList",
+            "simpleTableColumns": [
+              {
+                "selectItems": [
+                  {
+                    "displayValue": "City",
+                    "value": "ct"
+                  },
+                  {
+                    "displayValue": "Country",
+                    "value": "country"
+                  },
+                  {
+                    "displayValue": "Date of Birth",
+                    "value": "db"
+                  },
+                  {
+                    "displayValue": "Email",
+                    "value": "em"
+                  },
+                  {
+                    "displayValue": "First Name",
+                    "value": "fn"
+                  },
+                  {
+                    "displayValue": "Gender",
+                    "value": "ge"
+                  },
+                  {
+                    "displayValue": "Last Name",
+                    "value": "ln"
+                  },
+                  {
+                    "displayValue": "Phone",
+                    "value": "ph"
+                  },
+                  {
+                    "displayValue": "State",
+                    "value": "st"
+                  },
+                  {
+                    "displayValue": "Zip Code",
+                    "value": "zp"
+                  },
+                  {
+                    "value": "external_id",
+                    "displayValue": "External ID"
+                  },
+                  {
+                    "value": "subscription_id",
+                    "displayValue": "Subscription ID"
+                  },
+                  {
+                    "value": "lead_id",
+                    "displayValue": "Lead ID"
+                  },
+                  {
+                    "value": "fb_login_id",
+                    "displayValue": "FB Login ID"
+                  }
+                ],
+                "defaultValue": "",
+                "displayName": "Parameter name",
+                "name": "name",
+                "isUnique": true,
+                "type": "SELECT"
+              },
+              {
+                "defaultValue": "",
+                "displayName": "Parameter value",
+                "name": "value",
+                "type": "TEXT"
+              }
+            ],
+            "type": "SIMPLE_TABLE",
+            "newRowButtonText": "Add parameter",
+            "enablingConditions": [
+              {
+                "paramName": "inheritUserData",
+                "paramValue": "override",
+                "type": "EQUALS"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "displayName": "Object Properties",
+    "name": "objectPropertiesGroup",
+    "groupStyle": "ZIPPY_CLOSED",
+    "type": "GROUP",
+    "subParams": [
+      {
+        "type": "SELECT",
+        "name": "inheritObjectProperties",
+        "selectItems": [
+          {
+            "value": "inherit",
+            "displayValue": "Inherit from Client"
+          },
+          {
+            "value": "override",
+            "displayValue": "Override"
+          }
+        ],
+        "simpleValueType": true,
+        "subParams": [
+          {
+            "name": "objectPropertyList",
+            "simpleTableColumns": [
+              {
+                "valueValidators": [],
+                "defaultValue": "",
+                "displayName": "Property Name",
+                "name": "name",
+                "isUnique": true,
+                "type": "TEXT"
+              },
+              {
+                "defaultValue": "",
+                "displayName": "Property Value",
+                "name": "value",
+                "type": "TEXT"
+              }
+            ],
+            "type": "SIMPLE_TABLE",
+            "newRowButtonText": "Add property",
+            "enablingConditions": [
+              {
+                "paramName": "inheritObjectProperties",
+                "paramValue": "override",
+                "type": "EQUALS"
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 ]
 
@@ -68,46 +516,70 @@ const lowerCasePartsToStandardEvent = str => {
   }).join('');
 };
 
-const eventData = getAllEventData();
-
-const mapFbEvent = data => {
-  const mappedData = {
-    event_name: data.event_name !== 'custom' ? lowerCasePartsToStandardEvent(data.event_name) : data['x-fb-custom_event'],
-    event_time: Math.round(data.timestamp_micros / 1000),
-    user_data: {
-      client_ip_address: data.user_properties.ip_address,
-      client_user_agent: data.user_properties.user_agent
-    },
-    data_processing_options: data['x-fb-dpo']
-  };
-  if (data.page_location) mappedData.event_source_url = data.page_location;
-  if (data['x-fb-opt_out']) mappedData.opt_out = data['x-fb-opt_out'];
-  if (data['x-fb-dpoco']) mappedData.data_processing_options_country = data['x-fb-dpoco'];
-  if (data['x-fb-dpost']) mappedData.data_processing_options_state = data['x-fb-dpost'];
-  if (data['x-fb-custom_data']) mappedData.custom_data = data['x-fb-custom_data'];
-  if (data.user_properties.email_address) mappedData.user_data.em = data.user_properties.email_address;
-  if (data.user_properties.phone_number) mappedData.user_data.ph = data.user_properties.phone_number;
-  if (data.user_properties.gender) mappedData.user_data.ge = data.user_properties.gender;
-  if (data.user_properties.date_of_birth) mappedData.user_data.db = data.user_properties.date_of_birth;
-  if (data.user_properties.last_name) mappedData.user_data.ln = data.user_properties.last_name;
-  if (data.user_properties.first_name) mappedData.user_data.fn = data.user_properties.first_name;
-  if (data.user_properties.address.city) mappedData.user_data.ct = data.user_properties.address.city;
-  if (data.user_properties.address.region) mappedData.user_data.st = data.user_properties.address.region;
-  if (data.user_properties.address.post_code) mappedData.user_data.zp = data.user_properties.address.post_code;
-  if (data.user_properties.address.country_code) mappedData.user_data.country = data.user_properties.address.country_code;
-  if (data.user_properties.user_id) mappedData.user_data.external_id = data.user_properties.user_id;
-  if (data['x-fb-fbc']) mappedData.user_data.fbc = data['x-fb-fbc'];
-  if (data['x-fb-fbp']) mappedData.user_data.fbp = data['x-fb-fbp'];
-  if (data['x-fb-subscription_id']) mappedData.user_data.subscription_id = data['x-fb-subscription_id'];
-  if (data['x-fb-login_id']) mappedData.user_data.fb_login_id = data['x-fb-login_id'];
-  if (data['x-fb-lead_id']) mappedData.user_data.lead_id = data['x-fb-lead_id'];
+// Merge with overriden fields
+const mergeWithTagFields = mappedData => {
+  if (data.eventName) mappedData.event_name = data.eventName;
+  if (data.optOut !== 'inherit') mappedData.opt_out = data.optOut;
+  if (data.eventSourceUrl) mappedData.event_source_url = data.eventSourceUrl;
+  if (data.eventId) mappedData.event_id = data.eventId;
+  if (data.dpoCountry) mappedData.data_processing_options_country = data.dpoCountry;
+  if (data.dpoState) mappedData.data_processing_options_state = data.dpoState;
+  if (data.userDataList) {
+    data.userDataList.forEach(d => {
+      mappedData.user_data[d.name] = d.value;
+    });
+  }
+  if (data.objectPropertyList) {
+    data.objectPropertyList.forEach(d => {
+      mappedData.custom_data = mappedData.custom_data || {};
+      mappedData.custom_data[d.name] = d.value;
+    });
+  }
   return mappedData;
 };
 
+const eventData = getAllEventData();
+const pixelId = data.pixelId || eventData['x-fb-pixel_id'];
+const testId = data.testId || eventData['x-fb-test_event_code'];
+
+const mapFbEvent = fbData => {
+  const mappedData = {
+    event_name: fbData.event_name !== 'custom_facebook' ? lowerCasePartsToStandardEvent(fbData.event_name) : fbData['x-fb-custom_event'],
+    event_time: Math.round(fbData.timestamp_micros / 1000),
+    user_data: {
+      client_ip_address: fbData.user_properties.ip_address,
+      client_user_agent: fbData.user_properties.user_agent
+    },
+    data_processing_options: fbData['x-fb-dpo']
+  };
+  if (fbData.event_id) mappedData.event_id = fbData.event_id;
+  if (fbData.page_location) mappedData.event_source_url = fbData.page_location;
+  if (fbData['x-fb-opt_out']) mappedData.opt_out = fbData['x-fb-opt_out'];
+  if (fbData['x-fb-dpoco']) mappedData.data_processing_options_country = fbData['x-fb-dpoco'];
+  if (fbData['x-fb-dpost']) mappedData.data_processing_options_state = fbData['x-fb-dpost'];
+  if (fbData['x-fb-custom_data']) mappedData.custom_data = fbData['x-fb-custom_data'];
+  if (fbData.user_properties.email_address) mappedData.user_data.em = fbData.user_properties.email_address;
+  if (fbData.user_properties.phone_number) mappedData.user_data.ph = fbData.user_properties.phone_number;
+  if (fbData.user_properties.gender) mappedData.user_data.ge = fbData.user_properties.gender;
+  if (fbData.user_properties.date_of_birth) mappedData.user_data.db = fbData.user_properties.date_of_birth;
+  if (fbData.user_properties.last_name) mappedData.user_data.ln = fbData.user_properties.last_name;
+  if (fbData.user_properties.first_name) mappedData.user_data.fn = fbData.user_properties.first_name;
+  if (fbData.user_properties.address.city) mappedData.user_data.ct = fbData.user_properties.address.city;
+  if (fbData.user_properties.address.region) mappedData.user_data.st = fbData.user_properties.address.region;
+  if (fbData.user_properties.address.post_code) mappedData.user_data.zp = fbData.user_properties.address.post_code;
+  if (fbData.user_properties.address.country_code) mappedData.user_data.country = fbData.user_properties.address.country_code;
+  if (fbData.user_properties.user_id) mappedData.user_data.external_id = fbData.user_properties.user_id;
+  if (fbData['x-fb-fbc']) mappedData.user_data.fbc = fbData['x-fb-fbc'];
+  if (fbData['x-fb-fbp']) mappedData.user_data.fbp = fbData['x-fb-fbp'];
+  if (fbData['x-fb-subscription_id']) mappedData.user_data.subscription_id = fbData['x-fb-subscription_id'];
+  if (fbData['x-fb-login_id']) mappedData.user_data.fb_login_id = fbData['x-fb-login_id'];
+  if (fbData['x-fb-lead_id']) mappedData.user_data.lead_id = fbData['x-fb-lead_id'];
+  return mergeWithTagFields(mappedData);
+};
 
 const apiVersion = '7.0';
-const postUrl = 'https://graph.facebook.com/v' + apiVersion + '/' + enc(eventData['x-fb-pixel_id']) + '/events?access_token=' + enc(data.accessToken);
-const postBody = 'data=' + enc(JSON.stringify([mapFbEvent(eventData)])) + '&test_event_code=' + enc(eventData['x-fb-test_event_code']);
+const postUrl = 'https://graph.facebook.com/v' + apiVersion + '/' + enc(pixelId) + '/events?access_token=' + enc(data.accessToken);
+const postBody = 'data=' + enc(JSON.stringify([mapFbEvent(eventData)])) + '&test_event_code=' + enc(testId);
 
 sendHttpRequest(postUrl, (statusCode, headers, body) => {
   setResponseStatus(statusCode);
@@ -237,7 +709,7 @@ scenarios:
     assertApi('gtmOnSuccess').wasCalled();
 - name: HTTP Request sent successfully with custom event
   code: |-
-    eventData.event_name = 'custom';
+    eventData.event_name = 'custom_facebook';
     eventData['x-fb-custom_event'] = 'MyCustomEventName';
     mappedData.event_name = 'MyCustomEventName';
     mockBody = 'data=' + enc(JSON.stringify([mappedData])) + '&test_event_code=' + enc('test_event_code');
@@ -250,38 +722,86 @@ scenarios:
     assertApi('setResponseStatus').wasCalledWith(200);
     assertApi('setResponseBody').wasCalledWith('');
     assertApi('gtmOnSuccess').wasCalled();
+- name: Overridden values sent successfully
+  code: |-
+    mockData.pixelId = 'new_pixel_id';
+    mockData.eventName = 'new_event_name';
+    mockData.optOut = 'false';
+    mockData.eventSourceUrl = 'https://new-event-source-url.com';
+    mockData.eventId = 'new_event_id';
+    mockData.testId = 'new_test_id';
+    mockData.dpoCountry = 'new_dpo_country';
+    mockData.dpoState = 'new_dpo_state';
+    mockData.userDataList = [{name: 'ct', value: 'new_ct'}];
+    mockData.objectPropertyList = [{name: 'content_type', value: 'new_content_type'}];
+
+    if (mockData.eventName) mappedData.event_name = mockData.eventName;
+    if (mockData.optOut !== 'inherit') mappedData.opt_out = mockData.optOut;
+    if (mockData.eventSourceUrl) mappedData.event_source_url = mockData.eventSourceUrl;
+    if (mockData.eventId) mappedData.event_id = mockData.eventId;
+    if (mockData.dpoCountry) mappedData.data_processing_options_country = mockData.dpoCountry;
+    if (mockData.dpoState) mappedData.data_processing_options_state = mockData.dpoState;
+    if (mockData.userDataList) {
+      mockData.userDataList.forEach(d => {
+        mappedData.user_data[d.name] = d.value;
+      });
+    }
+    if (mockData.objectPropertyList) {
+      mockData.objectPropertyList.forEach(d => {
+        mappedData.custom_data = mappedData.custom_data || {};
+        mappedData.custom_data[d.name] = d.value;
+      });
+    }
+
+    const newMockUrl = 'https://graph.facebook.com/v7.0/new_pixel_id/events?access_token=' + enc(mockData.accessToken);
+    let newMockBody = 'data=' + enc(JSON.stringify([mappedData])) + '&test_event_code=' + enc('new_test_id');
+    const newMockOptions = {headers: {content_type: 'application/x-www-form-urlencoded'}, method: 'POST', timeout: 500};
+
+    // Call runCode to run the template's code.
+    runCode(mockData);
+
+    // Verify that the tag finished successfully.
+    assertApi('sendHttpRequest').wasCalledWith(newMockUrl, httpResponse, newMockOptions, newMockBody);
+    assertApi('setResponseStatus').wasCalledWith(200);
+    assertApi('setResponseBody').wasCalledWith('');
+    assertApi('gtmOnSuccess').wasCalled();
 setup: "const enc = require('encodeUriComponent');\nconst JSON = require('JSON');\n\
-  const Math = require('Math');\n\nconst mockData = {\n  accessToken: 'access_token'\n\
-  };\n\nconst eventData = {\n  event_name: 'page_view',\n  timestamp_micros: 12345678900,\n\
-  \  'x-fb-opt_out': true,\n  'x-fb-pixel_id': 'pixel_id',\n  page_location: 'https://www.domain.com/',\n\
-  \  event_id: 'event_id',\n  user_properties: {\n    ip_address: '1.2.3.4',\n   \
-  \ user_agent: 'user-agent',\n    address: {}\n  },\n  'x-fb-login_id': 1234567,\n\
-  \  'x-fb-custom_data': {\n    content_type: 'product',\n    currency: 'EUR'\n  },\n\
-  \  'x-fb-dpo': ['LDU'],\n  'x-fb-dpoco': '0',\n  'x-fb-dpost': '0',\n  'x-fb-test_event_code':\
-  \ 'test_event_code'\n};\n\nconst mappedData = {\n  event_name: 'PageView',\n  event_time:\
-  \ Math.round(eventData.timestamp_micros / 1000),\n  user_data: {\n    client_ip_address:\
-  \ eventData.user_properties.ip_address,\n    client_user_agent: eventData.user_properties.user_agent\n\
-  \  },\n  data_processing_options: eventData['x-fb-dpo']\n};\nif (eventData.page_location)\
-  \ mappedData.event_source_url = eventData.page_location;\nif (eventData['x-fb-opt_out'])\
-  \ mappedData.opt_out = eventData['x-fb-opt_out'];\nif (eventData['x-fb-dpoco'])\
-  \ mappedData.data_processing_options_country = eventData['x-fb-dpoco'];\nif (eventData['x-fb-dpost'])\
-  \ mappedData.data_processing_options_state = eventData['x-fb-dpost'];\nif (eventData['x-fb-custom_data'])\
-  \ mappedData.custom_data = eventData['x-fb-custom_data'];\nif (eventData.user_properties.email_address)\
-  \ mappedData.user_data.em = eventData.user_properties.email_address;\nif (eventData.user_properties.phone_number)\
-  \ mappedData.user_data.ph = eventData.user_properties.phone_number;\nif (eventData.user_properties.gender)\
-  \ mappedData.user_data.ge = eventData.user_properties.gender;\nif (eventData.user_properties.date_of_birth)\
-  \ mappedData.user_data.db = eventData.user_properties.date_of_birth;\nif (eventData.user_properties.last_name)\
-  \ mappedData.user_data.ln = eventData.user_properties.last_name;\nif (eventData.user_properties.first_name)\
-  \ mappedData.user_data.fn = eventData.user_properties.first_name;\nif (eventData.user_properties.address.city)\
-  \ mappedData.user_data.ct = eventData.user_properties.address.city;\nif (eventData.user_properties.address.region)\
-  \ mappedData.user_data.st = eventData.user_properties.address.region;\nif (eventData.user_properties.address.post_code)\
-  \ mappedData.user_data.zp = eventData.user_properties.address.post_code;\nif (eventData.user_properties.address.country_code)\
-  \ mappedData.user_data.country = eventData.user_properties.address.country_code;\n\
-  if (eventData.user_properties.user_id) mappedData.user_data.external_id = eventData.user_properties.user_id;\n\
-  if (eventData['x-fb-fbc']) mappedData.user_data.fbc = eventData['x-fb-fbc'];\nif\
-  \ (eventData['x-fb-fbp']) mappedData.user_data.fbp = eventData['x-fb-fbp'];\nif\
-  \ (eventData['x-fb-subscription_id']) mappedData.user_data.subscription_id = eventData['x-fb-subscription_id'];\n\
-  if (eventData['x-fb-login_id']) mappedData.user_data.fb_login_id = eventData['x-fb-login_id'];\n\
+  const Math = require('Math');\n\nconst mockData = {\n  accessToken: 'access_token',\n\
+  \  inheritPixelId: 'inherit',\n  inheritEventName: 'inherit',\n  optOut: 'inherit',\n\
+  \  inheritEventSourceUrl: 'inherit',\n  inheritEventId: 'inherit',\n  inheritTestId:\
+  \ 'inherit',\n  inheritDpo: 'inherit',\n  inheritUserData: 'inherit',\n  inheritCustomData:\
+  \ 'inherit'\n};\n\nconst eventData = {\n  event_name: 'page_view',\n  timestamp_micros:\
+  \ 12345678900,\n  'x-fb-opt_out': true,\n  'x-fb-pixel_id': 'pixel_id',\n  page_location:\
+  \ 'https://www.domain.com/',\n  event_id: 'event_id',\n  user_properties: {\n  \
+  \  ip_address: '1.2.3.4',\n    user_agent: 'user-agent',\n    address: {}\n  },\n\
+  \  'x-fb-login_id': 1234567,\n  'x-fb-custom_data': {\n    content_type: 'product',\n\
+  \    currency: 'EUR'\n  },\n  'x-fb-dpo': ['LDU'],\n  'x-fb-dpoco': '0',\n  'x-fb-dpost':\
+  \ '0',\n  'x-fb-test_event_code': 'test_event_code'\n};\n\nconst mappedData = {\n\
+  \  event_name: 'PageView',\n  event_time: Math.round(eventData.timestamp_micros\
+  \ / 1000),\n  user_data: {\n    client_ip_address: eventData.user_properties.ip_address,\n\
+  \    client_user_agent: eventData.user_properties.user_agent\n  },\n  data_processing_options:\
+  \ eventData['x-fb-dpo']\n};\nif (eventData.event_id) mappedData.event_id = eventData.event_id;\n\
+  if (eventData.page_location) mappedData.event_source_url = eventData.page_location;\n\
+  if (eventData['x-fb-opt_out']) mappedData.opt_out = eventData['x-fb-opt_out'];\n\
+  if (eventData['x-fb-dpoco']) mappedData.data_processing_options_country = eventData['x-fb-dpoco'];\n\
+  if (eventData['x-fb-dpost']) mappedData.data_processing_options_state = eventData['x-fb-dpost'];\n\
+  if (eventData['x-fb-custom_data']) mappedData.custom_data = eventData['x-fb-custom_data'];\n\
+  if (eventData.user_properties.email_address) mappedData.user_data.em = eventData.user_properties.email_address;\n\
+  if (eventData.user_properties.phone_number) mappedData.user_data.ph = eventData.user_properties.phone_number;\n\
+  if (eventData.user_properties.gender) mappedData.user_data.ge = eventData.user_properties.gender;\n\
+  if (eventData.user_properties.date_of_birth) mappedData.user_data.db = eventData.user_properties.date_of_birth;\n\
+  if (eventData.user_properties.last_name) mappedData.user_data.ln = eventData.user_properties.last_name;\n\
+  if (eventData.user_properties.first_name) mappedData.user_data.fn = eventData.user_properties.first_name;\n\
+  if (eventData.user_properties.address.city) mappedData.user_data.ct = eventData.user_properties.address.city;\n\
+  if (eventData.user_properties.address.region) mappedData.user_data.st = eventData.user_properties.address.region;\n\
+  if (eventData.user_properties.address.post_code) mappedData.user_data.zp = eventData.user_properties.address.post_code;\n\
+  if (eventData.user_properties.address.country_code) mappedData.user_data.country\
+  \ = eventData.user_properties.address.country_code;\nif (eventData.user_properties.user_id)\
+  \ mappedData.user_data.external_id = eventData.user_properties.user_id;\nif (eventData['x-fb-fbc'])\
+  \ mappedData.user_data.fbc = eventData['x-fb-fbc'];\nif (eventData['x-fb-fbp'])\
+  \ mappedData.user_data.fbp = eventData['x-fb-fbp'];\nif (eventData['x-fb-subscription_id'])\
+  \ mappedData.user_data.subscription_id = eventData['x-fb-subscription_id'];\nif\
+  \ (eventData['x-fb-login_id']) mappedData.user_data.fb_login_id = eventData['x-fb-login_id'];\n\
   if (eventData['x-fb-lead_id']) mappedData.user_data.lead_id = eventData['x-fb-lead_id'];\n\
   \nconst mockUrl = 'https://graph.facebook.com/v7.0/pixel_id/events?access_token='\
   \ + enc(mockData.accessToken);\nlet mockBody = 'data=' + enc(JSON.stringify([mappedData]))\
