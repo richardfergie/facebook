@@ -1,7 +1,7 @@
 homepage: "https://www.simoahava.com/"
 versions:
   # Latest version
-  - sha: edd59683746919a00edc5eef1633d1c6f138afc4
+  - sha: d7f173292b2b17de419f8beb241f6596b4799fd0
     changeNotes: Add possibility to override fields in the template.
   # Older versions
   - sha: 3f3a0245ea939c5233b2d660eddb1b630f22ca99~
