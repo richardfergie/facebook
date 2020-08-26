@@ -585,7 +585,7 @@ const mapFbEvent = fbData => {
   return mergeWithTagFields(mappedData);
 };
 
-const apiVersion = '7.0';
+const apiVersion = '8.0';
 const postUrl = 'https://graph.facebook.com/v' + apiVersion + '/' + enc(pixelId) + '/events?access_token=' + enc(data.accessToken);
 const postBody = 'data=' + enc(JSON.stringify([mapFbEvent(eventData)])) + '&test_event_code=' + enc(testId);
 
