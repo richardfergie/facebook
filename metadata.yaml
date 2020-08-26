@@ -1,9 +1,11 @@
 homepage: "https://www.simoahava.com/"
 versions:
   # Latest version
+  - sha: 0c177beca6591bd5980268fd2db6638f36fbdfd7
+    changeNotes: Update Facebook's Conversions API version to 8.0.
+  # Older versions
   - sha: d7f173292b2b17de419f8beb241f6596b4799fd0
     changeNotes: Add possibility to override fields in the template.
-  # Older versions
   - sha: 3f3a0245ea939c5233b2d660eddb1b630f22ca99~
     changeNotes: Use unified event_name format.
   - sha: 8edb5cd67ec2be04571085b8072e71ae977f2b21
