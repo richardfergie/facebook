@@ -553,7 +553,7 @@ const testId = data.testId || eventData['x-fb-test_event_code'];
 const mapFbEvent = fbData => {
   const mappedData = {
     event_name: fbData.event_name !== 'custom_facebook' ? lowerCasePartsToStandardEvent(fbData.event_name) : fbData['x-fb-custom_event'],
-    event_time: Math.round(fbData.timestamp_micros / 1000),
+    event_time: Math.floor(fbData.timestamp_micros / 1000),
     user_data: {
       client_ip_address: fbData.user_properties.ip_address,
       client_user_agent: fbData.user_properties.user_agent
@@ -785,7 +785,7 @@ setup: "const enc = require('encodeUriComponent');\nconst JSON = require('JSON')
   \  'x-fb-login_id': 1234567,\n  'x-fb-custom_data': {\n    content_type: 'product',\n\
   \    currency: 'EUR'\n  },\n  'x-fb-dpo': ['LDU'],\n  'x-fb-dpoco': '0',\n  'x-fb-dpost':\
   \ '0',\n  'x-fb-test_event_code': 'test_event_code'\n};\n\nconst mappedData = {\n\
-  \  event_name: 'PageView',\n  event_time: Math.round(eventData.timestamp_micros\
+  \  event_name: 'PageView',\n  event_time: Math.floor(eventData.timestamp_micros\
   \ / 1000),\n  user_data: {\n    client_ip_address: eventData.user_properties.ip_address,\n\
   \    client_user_agent: eventData.user_properties.user_agent\n  },\n  data_processing_options:\
   \ eventData['x-fb-dpo']\n};\nif (eventData.event_id) mappedData.event_id = eventData.event_id;\n\
