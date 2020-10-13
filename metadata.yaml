@@ -1,9 +1,11 @@
 homepage: "https://www.simoahava.com/"
 versions:
   # Latest version
+  - sha: a0639a61669b1ed8ad07a5529d991b24513de7d3
+    changeNotes: Floor milliseconds in event timestamp instead of rounding up.
+  # Older versions
   - sha: 0c177beca6591bd5980268fd2db6638f36fbdfd7
     changeNotes: Update Facebook's Conversions API version to 8.0.
-  # Older versions
   - sha: d7f173292b2b17de419f8beb241f6596b4799fd0
     changeNotes: Add possibility to override fields in the template.
   - sha: 3f3a0245ea939c5233b2d660eddb1b630f22ca99~
