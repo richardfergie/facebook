@@ -585,7 +585,7 @@ const mapFbEvent = fbData => {
   return mergeWithTagFields(mappedData);
 };
 
-const apiVersion = '8.0';
+const apiVersion = '9.0';
 const postUrl = 'https://graph.facebook.com/v' + apiVersion + '/' + enc(pixelId) + '/events?access_token=' + enc(data.accessToken);
 const postBody = 'data=' + enc(JSON.stringify([mapFbEvent(eventData)])) + '&test_event_code=' + enc(testId);
 
@@ -761,7 +761,7 @@ scenarios:
       });
     }
 
-    const newMockUrl = 'https://graph.facebook.com/v7.0/new_pixel_id/events?access_token=' + enc(mockData.accessToken);
+    const newMockUrl = 'https://graph.facebook.com/v9.0/new_pixel_id/events?access_token=' + enc(mockData.accessToken);
     let newMockBody = 'data=' + enc(JSON.stringify([mappedData])) + '&test_event_code=' + enc('new_test_id');
     const newMockOptions = {headers: {content_type: 'application/x-www-form-urlencoded'}, method: 'POST', timeout: 500};
 
@@ -811,7 +811,7 @@ setup: "const enc = require('encodeUriComponent');\nconst JSON = require('JSON')
   \ mappedData.user_data.subscription_id = eventData['x-fb-subscription_id'];\nif\
   \ (eventData['x-fb-login_id']) mappedData.user_data.fb_login_id = eventData['x-fb-login_id'];\n\
   if (eventData['x-fb-lead_id']) mappedData.user_data.lead_id = eventData['x-fb-lead_id'];\n\
-  \nconst mockUrl = 'https://graph.facebook.com/v7.0/pixel_id/events?access_token='\
+  \nconst mockUrl = 'https://graph.facebook.com/v9.0/pixel_id/events?access_token='\
   \ + enc(mockData.accessToken);\nlet mockBody = 'data=' + enc(JSON.stringify([mappedData]))\
   \ + '&test_event_code=' + enc('test_event_code');\nconst mockOptions = {headers:\
   \ {content_type: 'application/x-www-form-urlencoded'}, method: 'POST', timeout:\
