@@ -508,6 +508,7 @@ const sendHttpRequest = require('sendHttpRequest');
 const setResponseBody = require('setResponseBody');
 const setResponseHeader = require('setResponseHeader');
 const setResponseStatus = require('setResponseStatus');
+const getTimestampMillis = require('getTimestampMillis');
 
 // Helpers
 
@@ -553,10 +554,10 @@ const testId = data.testId || eventData['x-fb-test_event_code'];
 const mapFbEvent = fbData => {
   const mappedData = {
     event_name: fbData.event_name !== 'custom_facebook' ? lowerCasePartsToStandardEvent(fbData.event_name) : fbData['x-fb-custom_event'],
-    event_time: Math.floor(fbData.timestamp_micros / 1000),
+    event_time: fbData.timestamp_micros ? Math.floor(fbData.timestamp_micros / 1000) : Math.floor(getTimestampMillis() / 1000),
     user_data: {
-      client_ip_address: fbData.user_properties.ip_address,
-      client_user_agent: fbData.user_properties.user_agent
+      client_ip_address: fbData.user_properties ? fbData.user_properties.ip_address : fbData.ip_override,
+      client_user_agent: fbData.user_properties ? fbData.user_properties.user_agent :fbData.user_agent
     },
     data_processing_options: fbData['x-fb-dpo']
   };
@@ -566,17 +567,19 @@ const mapFbEvent = fbData => {
   if (fbData['x-fb-dpoco']) mappedData.data_processing_options_country = fbData['x-fb-dpoco'];
   if (fbData['x-fb-dpost']) mappedData.data_processing_options_state = fbData['x-fb-dpost'];
   if (fbData['x-fb-custom_data']) mappedData.custom_data = fbData['x-fb-custom_data'];
-  if (fbData.user_properties.email_address) mappedData.user_data.em = fbData.user_properties.email_address;
-  if (fbData.user_properties.phone_number) mappedData.user_data.ph = fbData.user_properties.phone_number;
-  if (fbData.user_properties.gender) mappedData.user_data.ge = fbData.user_properties.gender;
-  if (fbData.user_properties.date_of_birth) mappedData.user_data.db = fbData.user_properties.date_of_birth;
-  if (fbData.user_properties.last_name) mappedData.user_data.ln = fbData.user_properties.last_name;
-  if (fbData.user_properties.first_name) mappedData.user_data.fn = fbData.user_properties.first_name;
-  if (fbData.user_properties.address.city) mappedData.user_data.ct = fbData.user_properties.address.city;
-  if (fbData.user_properties.address.region) mappedData.user_data.st = fbData.user_properties.address.region;
-  if (fbData.user_properties.address.post_code) mappedData.user_data.zp = fbData.user_properties.address.post_code;
-  if (fbData.user_properties.address.country_code) mappedData.user_data.country = fbData.user_properties.address.country_code;
-  if (fbData.user_properties.user_id) mappedData.user_data.external_id = fbData.user_properties.user_id;
+  if(fbData.user_properties) {
+    if (fbData.user_properties.email_address) mappedData.user_data.em = fbData.user_properties.email_address;
+    if (fbData.user_properties.phone_number) mappedData.user_data.ph = fbData.user_properties.phone_number;
+    if (fbData.user_properties.gender) mappedData.user_data.ge = fbData.user_properties.gender;
+    if (fbData.user_properties.date_of_birth) mappedData.user_data.db = fbData.user_properties.date_of_birth;
+    if (fbData.user_properties.last_name) mappedData.user_data.ln = fbData.user_properties.last_name;
+    if (fbData.user_properties.first_name) mappedData.user_data.fn = fbData.user_properties.first_name;
+    if (fbData.user_properties.address.city) mappedData.user_data.ct = fbData.user_properties.address.city;
+    if (fbData.user_properties.address.region) mappedData.user_data.st = fbData.user_properties.address.region;
+    if (fbData.user_properties.address.post_code) mappedData.user_data.zp = fbData.user_properties.address.post_code;
+    if (fbData.user_properties.address.country_code) mappedData.user_data.country = fbData.user_properties.address.country_code;
+    if (fbData.user_properties.user_id) mappedData.user_data.external_id = fbData.user_properties.user_id;
+  }
   if (fbData['x-fb-fbc']) mappedData.user_data.fbc = fbData['x-fb-fbc'];
   if (fbData['x-fb-fbp']) mappedData.user_data.fbp = fbData['x-fb-fbp'];
   if (fbData['x-fb-subscription_id']) mappedData.user_data.subscription_id = fbData['x-fb-subscription_id'];
